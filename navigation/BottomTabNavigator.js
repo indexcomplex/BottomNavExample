@@ -1,5 +1,3 @@
-// navigation/BottomTabNavigator.js
-
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,13 +10,32 @@ import NotificationsScreen from '../screens/NotificationsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SelectionScreen from '../screens/SelectionScreen';
 import ResultScreen from '../screens/ResultScreen';
+import CustomBackButton from '../components/CustomBackButton';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+function HomeStackNavigator() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerLeft: () => <CustomBackButton />,
+      }}
+    >
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen name="SelectionScreen" component={SelectionScreen} />
+      <Stack.Screen name="ResultScreen" component={ResultScreen} />
+    </Stack.Navigator>
+  );
+}
+
 function SearchStackNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerLeft: () => <CustomBackButton />,
+      }}
+    >
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
       <Stack.Screen name="SelectionScreen" component={SelectionScreen} />
       <Stack.Screen name="ResultScreen" component={ResultScreen} />
@@ -44,7 +61,6 @@ function BottomTabNavigator() {
               iconName = focused ? 'user' : 'user';
             }
 
-            // You can return any component that you like here!
             return <FontAwesome name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: 'tomato',
@@ -54,7 +70,7 @@ function BottomTabNavigator() {
           },
         })}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Home" component={HomeStackNavigator} />
         <Tab.Screen name="Search" component={SearchStackNavigator} />
         <Tab.Screen name="Notifications" component={NotificationsScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
