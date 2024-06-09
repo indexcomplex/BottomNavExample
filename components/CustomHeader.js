@@ -3,12 +3,13 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
-function CustomHeader({ title, showBackButton }) {
+function CustomHeader({ title }) {
   const navigation = useNavigation();
+  const canGoBack = navigation.canGoBack();
 
   return (
     <View style={styles.headerContainer}>
-      {showBackButton && (
+      {canGoBack && (
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Icon name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
@@ -26,9 +27,9 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 10,
     paddingHorizontal: 10,
     backgroundColor: '#fff',
+    height: 56, // Standard header height
   },
   backButton: {
     marginRight: 10,

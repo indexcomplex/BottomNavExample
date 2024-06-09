@@ -21,23 +21,26 @@ function HomeStackNavigator() {
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Home" showBackButton={navigation.canGoBack()} />,
-        })}
+        options={{
+          header: () => <CustomHeader title="Home" />,
+          headerTitle: '', // Hide default header title
+        }}
       />
       <Stack.Screen
         name="SelectionScreen"
         component={SelectionScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Selection" showBackButton={navigation.canGoBack()} />,
-        })}
+        options={{
+          header: () => <CustomHeader title="Selection" />,
+          headerTitle: '', // Hide default header title
+        }}
       />
       <Stack.Screen
         name="ResultScreen"
         component={ResultScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Result" showBackButton={navigation.canGoBack()} />,
-        })}
+        options={{
+          header: () => <CustomHeader title="Result" />,
+          headerTitle: '', // Hide default header title
+        }}
       />
     </Stack.Navigator>
   );
@@ -49,23 +52,27 @@ function SearchStackNavigator() {
       <Stack.Screen
         name="SearchScreen"
         component={SearchScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Search" showBackButton={navigation.canGoBack()} />,
-        })}
+        options={{
+          header: () => <CustomHeader title="Search" />,
+          headerTitle: '', // Hide default header title
+          headerLeft: () => null, // Hide the back button for the initial screen
+        }}
       />
       <Stack.Screen
         name="SelectionScreen"
         component={SelectionScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Selection" showBackButton={navigation.canGoBack()} />,
-        })}
+        options={{
+          header: () => <CustomHeader title="Selection" />,
+          headerTitle: '', // Hide default header title
+        }}
       />
       <Stack.Screen
         name="ResultScreen"
         component={ResultScreen}
-        options={({ navigation }) => ({
-          header: () => <CustomHeader title="Result" showBackButton={navigation.canGoBack()} />,
-        })}
+        options={{
+          header: () => <CustomHeader title="Result" />,
+          headerTitle: '', // Hide default header title
+        }}
       />
     </Stack.Navigator>
   );
