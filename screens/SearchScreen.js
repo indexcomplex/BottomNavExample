@@ -1,9 +1,9 @@
 // screens/SearchScreen.js
 
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, useColorScheme, Appearance } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, useColorScheme } from 'react-native';
 
-const imagePaths = {
+const chordImages = {
   ead: require('../assets/ead/ead.png'),
   fbe: require('../assets/fbe/fbe.png'),
   gcf: require('../assets/gcf/gcf.png'),
@@ -20,7 +20,7 @@ function SearchScreen({ navigation }) {
         onPress={() => navigation.navigate('SelectionScreen', { chord: 'EAD' })}
       >
         <Image
-          source={imagePaths.ead}
+          source={chordImages.ead}
           style={styles.buttonImage}
         />
       </TouchableOpacity>
@@ -29,7 +29,7 @@ function SearchScreen({ navigation }) {
         onPress={() => navigation.navigate('SelectionScreen', { chord: 'FBE' })}
       >
         <Image
-          source={imagePaths.fbe}
+          source={chordImages.fbe}
           style={styles.buttonImage}
         />
       </TouchableOpacity>
@@ -38,7 +38,7 @@ function SearchScreen({ navigation }) {
         onPress={() => navigation.navigate('SelectionScreen', { chord: 'GCF' })}
       >
         <Image
-          source={imagePaths.gcf}
+          source={chordImages.gcf}
           style={styles.buttonImage}
         />
       </TouchableOpacity>

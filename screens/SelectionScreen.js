@@ -1,12 +1,17 @@
 // screens/SelectionScreen.js
 
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, useColorScheme, Appearance } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, useColorScheme } from 'react-native';
 
-const imagePaths = {
+const chordImages = {
   ead: require('../assets/ead/ead.png'),
   fbe: require('../assets/fbe/fbe.png'),
   gcf: require('../assets/gcf/gcf.png'),
+};
+
+const selectionImages = {
+  31: require('../assets/31/31.png'),
+  34: require('../assets/34/34.png'),
 };
 
 function SelectionScreen({ route, navigation }) {
@@ -21,7 +26,7 @@ function SelectionScreen({ route, navigation }) {
         onPress={() => navigation.navigate('ResultScreen', { chord, number: '31' })}
       >
         <Image
-          source={imagePaths[chord.toLowerCase()]}
+          source={selectionImages[31]}
           style={styles.buttonImage}
         />
       </TouchableOpacity>
@@ -30,7 +35,7 @@ function SelectionScreen({ route, navigation }) {
         onPress={() => navigation.navigate('ResultScreen', { chord, number: '34' })}
       >
         <Image
-          source={imagePaths[chord.toLowerCase()]}
+          source={selectionImages[34]}
           style={styles.buttonImage}
         />
       </TouchableOpacity>
