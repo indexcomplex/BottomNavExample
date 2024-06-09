@@ -1,75 +1,75 @@
-// screens/SelectionScreen.js
-
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, useColorScheme } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
-const chordImages = {
+const accordionTypes = {
   ead: require('../assets/ead/ead.png'),
   fbe: require('../assets/fbe/fbe.png'),
   gcf: require('../assets/gcf/gcf.png'),
 };
 
-const selectionImages = {
-  31: require('../assets/31/31.png'),
-  34: require('../assets/34/34.png'),
-};
-
-function SelectionScreen({ route, navigation }) {
-  const { chord } = route.params;
-  const colorScheme = useColorScheme();
-
+function SelectionScreen({ navigation }) {
   return (
-    <View style={[styles.container, colorScheme === 'dark' && styles.darkContainer]}>
-      <Text style={[styles.title, colorScheme === 'dark' && styles.darkTitle]}>Selected: {chord}</Text>
-      <TouchableOpacity
-        style={styles.imageButton}
-        onPress={() => navigation.navigate('ResultScreen', { chord, number: '31' })}
-      >
-        <Image
-          source={selectionImages[31]}
-          style={styles.buttonImage}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.imageButton}
-        onPress={() => navigation.navigate('ResultScreen', { chord, number: '34' })}
-      >
-        <Image
-          source={selectionImages[34]}
-          style={styles.buttonImage}
-        />
-      </TouchableOpacity>
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      {Object.keys(accordionTypes).map(type => (
+        <View key={type} style={styles.accordionTypeContainer}>
+          <Image source={accordionTypes[type]} style={styles.image} />
+          <Text style={styles.typeText}>{type.toUpperCase()}</Text>
+          <TouchableOpacity
+            style={styles.selectionButton}
+            onPress={() => navigation.navigate('ResultScreen', { type, selection: '31' })}
+          >
+            <Text style={styles.buttonText}>31</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.selectionButton}
+            onPress={() => navigation.navigate('ResultScreen', { type, selection: '34' })}
+          >
+            <Text style={styles.buttonText}>34</Text>
+          </TouchableOpacity>
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff', // Change background color to white
+    backgroundColor: '#f0f0f0',
+    paddingVertical: 20,
   },
-  darkContainer: {
-    backgroundColor: '#000',
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-    color: '#333',
-  },
-  darkTitle: {
-    color: '#fff',
-  },
-  imageButton: {
-    marginVertical: 10,
-    width: '80%',
+  accordionTypeContainer: {
     alignItems: 'center',
+    marginBottom: 20,
   },
-  buttonImage: {
-    width: '100%',
+  image: {
+    width: 100,
     height: 100,
     resizeMode: 'contain',
+  },
+  typeText: {
+    marginTop: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  selectionButton: {
+    backgroundColor: '#fff',
+    padding: 10,
+    marginTop: 10,
+    width: 80,
+    borderRadius: 10,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
+    elevation: 2,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

@@ -5,12 +5,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { FontAwesome } from '@expo/vector-icons';
 
 import HomeScreen from '../screens/HomeScreen';
-import SearchScreen from '../screens/SearchScreen';
+import SearchScreen from '../screens/SearchScreen'; // Updated to the new SearchScreen
 import NotificationsScreen from '../screens/NotificationsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import SelectionScreen from '../screens/SelectionScreen';
 import ResultScreen from '../screens/ResultScreen';
-import CustomBackButton from '../components/CustomBackButton';
+import CustomHeader from '../components/CustomHeader';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -18,9 +17,23 @@ const Stack = createStackNavigator();
 function HomeStackNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerLeft: () => null }} />
-      <Stack.Screen name="SelectionScreen" component={SelectionScreen} options={{ headerLeft: () => <CustomBackButton /> }} />
-      <Stack.Screen name="ResultScreen" component={ResultScreen} options={{ headerLeft: () => <CustomBackButton /> }} />
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          header: () => <CustomHeader title="Home" />,
+          headerTitle: '', // Hide default header title
+          headerLeft: () => null, // Hide the back button for the initial screen
+        }}
+      />
+      <Stack.Screen
+        name="ResultScreen"
+        component={ResultScreen}
+        options={{
+          header: () => <CustomHeader title="Result" />,
+          headerTitle: '', // Hide default header title
+        }}
+      />
     </Stack.Navigator>
   );
 }
@@ -28,9 +41,23 @@ function HomeStackNavigator() {
 function SearchStackNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerLeft: () => null }} />
-      <Stack.Screen name="SelectionScreen" component={SelectionScreen} options={{ headerLeft: () => <CustomBackButton /> }} />
-      <Stack.Screen name="ResultScreen" component={ResultScreen} options={{ headerLeft: () => <CustomBackButton /> }} />
+      <Stack.Screen
+        name="SearchScreen"
+        component={SearchScreen} // Updated to the new SearchScreen
+        options={{
+          header: () => <CustomHeader title="Search" />,
+          headerTitle: '', // Hide default header title
+          headerLeft: () => null, // Hide the back button for the initial screen
+        }}
+      />
+      <Stack.Screen
+        name="ResultScreen"
+        component={ResultScreen}
+        options={{
+          header: () => <CustomHeader title="Result" />,
+          headerTitle: '', // Hide default header title
+        }}
+      />
     </Stack.Navigator>
   );
 }
