@@ -24,6 +24,7 @@ function HomeStackNavigator() {
         options={{
           header: () => <CustomHeader title="Home" />,
           headerTitle: '', // Hide default header title
+          headerLeft: () => null, // Hide the back button for the initial screen
         }}
       />
       <Stack.Screen

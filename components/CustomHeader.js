@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 function CustomHeader({ title }) {
   const navigation = useNavigation();
-  const canGoBack = navigation.canGoBack();
+  const canGoBack = navigation.canGoBack(); // This checks if there is a previous screen to go back to
 
   return (
     <View style={styles.headerContainer}>
@@ -14,10 +14,12 @@ function CustomHeader({ title }) {
           <Icon name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
       )}
-      <Image
-        source={require('../assets/logo/logo.png')}
-        style={styles.logo}
-      />
+      {!canGoBack && (
+        <Image
+          source={require('../assets/logo/logo.png')}
+          style={styles.logo}
+        />
+      )}
       <Text style={styles.headerTitle}>{title}</Text>
     </View>
   );
