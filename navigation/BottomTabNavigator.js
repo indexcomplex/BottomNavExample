@@ -17,28 +17,20 @@ const Stack = createStackNavigator();
 
 function HomeStackNavigator() {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerLeft: () => <CustomBackButton />,
-      }}
-    >
-      <Stack.Screen name="HomeScreen" component={HomeScreen} />
-      <Stack.Screen name="SelectionScreen" component={SelectionScreen} />
-      <Stack.Screen name="ResultScreen" component={ResultScreen} />
+    <Stack.Navigator>
+      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerLeft: () => null }} />
+      <Stack.Screen name="SelectionScreen" component={SelectionScreen} options={{ headerLeft: () => <CustomBackButton /> }} />
+      <Stack.Screen name="ResultScreen" component={ResultScreen} options={{ headerLeft: () => <CustomBackButton /> }} />
     </Stack.Navigator>
   );
 }
 
 function SearchStackNavigator() {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerLeft: () => <CustomBackButton />,
-      }}
-    >
-      <Stack.Screen name="SearchScreen" component={SearchScreen} />
-      <Stack.Screen name="SelectionScreen" component={SelectionScreen} />
-      <Stack.Screen name="ResultScreen" component={ResultScreen} />
+    <Stack.Navigator>
+      <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerLeft: () => null }} />
+      <Stack.Screen name="SelectionScreen" component={SelectionScreen} options={{ headerLeft: () => <CustomBackButton /> }} />
+      <Stack.Screen name="ResultScreen" component={ResultScreen} options={{ headerLeft: () => <CustomBackButton /> }} />
     </Stack.Navigator>
   );
 }
