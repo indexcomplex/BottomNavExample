@@ -10,7 +10,7 @@ import NotificationsScreen from '../screens/NotificationsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SelectionScreen from '../screens/SelectionScreen';
 import ResultScreen from '../screens/ResultScreen';
-import CustomBackButton from '../components/CustomBackButton';
+import CustomHeader from '../components/CustomHeader';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -18,9 +18,27 @@ const Stack = createStackNavigator();
 function HomeStackNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerLeft: () => null }} />
-      <Stack.Screen name="SelectionScreen" component={SelectionScreen} options={{ headerLeft: () => <CustomBackButton /> }} />
-      <Stack.Screen name="ResultScreen" component={ResultScreen} options={{ headerLeft: () => <CustomBackButton /> }} />
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Home" showBackButton={navigation.canGoBack()} />,
+        })}
+      />
+      <Stack.Screen
+        name="SelectionScreen"
+        component={SelectionScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Selection" showBackButton={navigation.canGoBack()} />,
+        })}
+      />
+      <Stack.Screen
+        name="ResultScreen"
+        component={ResultScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Result" showBackButton={navigation.canGoBack()} />,
+        })}
+      />
     </Stack.Navigator>
   );
 }
@@ -28,9 +46,27 @@ function HomeStackNavigator() {
 function SearchStackNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerLeft: () => null }} />
-      <Stack.Screen name="SelectionScreen" component={SelectionScreen} options={{ headerLeft: () => <CustomBackButton /> }} />
-      <Stack.Screen name="ResultScreen" component={ResultScreen} options={{ headerLeft: () => <CustomBackButton /> }} />
+      <Stack.Screen
+        name="SearchScreen"
+        component={SearchScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Search" showBackButton={navigation.canGoBack()} />,
+        })}
+      />
+      <Stack.Screen
+        name="SelectionScreen"
+        component={SelectionScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Selection" showBackButton={navigation.canGoBack()} />,
+        })}
+      />
+      <Stack.Screen
+        name="ResultScreen"
+        component={ResultScreen}
+        options={({ navigation }) => ({
+          header: () => <CustomHeader title="Result" showBackButton={navigation.canGoBack()} />,
+        })}
+      />
     </Stack.Navigator>
   );
 }
