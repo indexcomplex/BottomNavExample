@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff', // Change background to white
-    paddingVertical: 20,
+    paddingVertical: 1, //switched from 10
   },
   accordionTypeContainer: {
     alignItems: 'center',
