@@ -9,6 +9,8 @@ import SearchScreen from '../screens/SearchScreen'; // Updated to the new Search
 import NotificationsScreen from '../screens/NotificationsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ResultScreen from '../screens/ResultScreen';
+import ChoiceScreen from '../screens/ChoiceScreen';
+import ImageScrollScreen from '../screens/ImageScrollScreen'; // New screen
 import CustomHeader from '../components/CustomHeader';
 
 const Tab = createBottomTabNavigator();
@@ -34,6 +36,22 @@ function HomeStackNavigator() {
           headerTitle: '', // Hide default header title
         }}
       />
+      <Stack.Screen
+        name="ChoiceScreen"
+        component={ChoiceScreen}
+        options={{
+          header: () => <CustomHeader title="Choice" />,
+          headerTitle: '', // Hide default header title
+        }}
+      />
+      <Stack.Screen
+        name="ImageScrollScreen"
+        component={ImageScrollScreen}
+        options={{
+          header: () => <CustomHeader title="Images" />,
+          headerTitle: '', // Hide default header title
+        }}
+      />
     </Stack.Navigator>
   );
 }
@@ -55,6 +73,22 @@ function SearchStackNavigator() {
         component={ResultScreen}
         options={{
           header: () => <CustomHeader title="Result" />,
+          headerTitle: '', // Hide default header title
+        }}
+      />
+      <Stack.Screen
+        name="ChoiceScreen"
+        component={ChoiceScreen}
+        options={{
+          header: () => <CustomHeader title="Choice" />,
+          headerTitle: '', // Hide default header title
+        }}
+      />
+      <Stack.Screen
+        name="ImageScrollScreen"
+        component={ImageScrollScreen}
+        options={{
+          header: () => <CustomHeader title="Images" />,
           headerTitle: '', // Hide default header title
         }}
       />

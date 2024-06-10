@@ -2,19 +2,23 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const items = {
-  ead: ['E', 'A', 'D', 'B', 'G'],
-  fbe: ['F', 'Bb', 'EB', 'C', 'Lab'],
-  gcf: ['G', 'C', 'F', 'D', 'Sib'],
+  ead: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'],
+  fbe: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'],
+  gcf: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'],
 };
 
-function ResultScreen({ route }) {
+function ResultScreen({ route, navigation }) {
   const { type, selection } = route.params;
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{type} - {selection} - Results</Text>
       {items[type].map((item, index) => (
-        <TouchableOpacity key={index} style={styles.itemButton}>
+        <TouchableOpacity
+          key={index}
+          style={styles.itemButton}
+          onPress={() => navigation.navigate('ChoiceScreen', { item })}
+        >
           <Text style={styles.itemText}>{item}</Text>
         </TouchableOpacity>
       ))}
