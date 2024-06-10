@@ -2,9 +2,9 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const items = {
-  ead: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'],
-  fbe: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'],
-  gcf: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'],
+  ead: ['E', 'A', 'D', 'B', 'G'],
+  fbe: ['F', 'Bb', 'EB', 'C', 'Lab'],
+  gcf: ['G', 'C', 'F', 'D', 'Sib'],
 };
 
 function ResultScreen({ route }) {
