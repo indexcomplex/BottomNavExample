@@ -1,4 +1,4 @@
-// not in use
+// not in use OG Idea
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 

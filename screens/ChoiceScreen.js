@@ -1,17 +1,18 @@
+// last choice b4 scrollview
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const choices = {
-  'ead': ['Choice 1A', 'Choice 1B', 'Choice 1C'],
-  'fbe': ['Choice 2A', 'Choice 2B', 'Choice 2C'],
-  'gcf': ['Choice 3A', 'Choice 3B', 'Choice 3C'],
+  'ead': ['Simple', 'Thirds', 'Sixths'],
+  'fbe': ['Simple', 'Thirds', 'Sixths'],
+  'gcf': ['Simple', 'Thirds', 'Sixths'],
 };
 
 function ChoiceScreen({ route, navigation }) {
   const { type, choice } = route.params; // Receive type and choice
 
   const handleChoicePress = (choice) => {
-    if (choice === 'Choice 1A') {
+    if (choice === 'Simple') {
       navigation.navigate('ImageScrollScreen');
     } else {
       console.log(`${choice} selected`);
