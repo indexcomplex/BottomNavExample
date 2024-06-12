@@ -1,4 +1,4 @@
-// not in use anymore
+// not in use
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 

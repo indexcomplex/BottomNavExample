@@ -1,6 +1,5 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -38,10 +37,10 @@ function HomeStackNavigator() {
         }}
       />
       <Stack.Screen
-        name="ChoiceScreen"
-        component={ChoiceScreen}
+        name="SearchScreen"
+        component={SearchScreen}
         options={{
-          header: () => <CustomHeader title="Choice" />,
+          header: () => <CustomHeader title="Search" />,
           headerTitle: '',
         }}
       />
@@ -50,6 +49,14 @@ function HomeStackNavigator() {
         component={ResultScreen}
         options={{
           header: () => <CustomHeader title="Result" />,
+          headerTitle: '',
+        }}
+      />
+      <Stack.Screen
+        name="ChoiceScreen"
+        component={ChoiceScreen}
+        options={{
+          header: () => <CustomHeader title="Choice" />,
           headerTitle: '',
         }}
       />
