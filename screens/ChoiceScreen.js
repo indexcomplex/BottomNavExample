@@ -1,31 +1,33 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 
-const items = {
-  ead: ['E', 'A', 'D', 'B', 'G'],
-  fbe: ['F', 'Bb', 'EB', 'C', 'Lab'],
-  gcf: ['G', 'C', 'F', 'D', 'Sib'],
+const choices = {
+  'ead': ['Choice 1A', 'Choice 1B', 'Choice 1C'],
+  'fbe': ['Choice 2A', 'Choice 2B', 'Choice 2C'],
+  'gcf': ['Choice 3A', 'Choice 3B', 'Choice 3C'],
 };
 
-function ResultScreen({ route }) {
-  const { type, selection } = route.params;
-  const navigation = useNavigation(); // Initialize useNavigation
+function ChoiceScreen({ route, navigation }) {
+  const { type, choice } = route.params; // Receive type and choice
 
   const handleChoicePress = (choice) => {
-    navigation.navigate('ChoiceScreen', { type, choice });
+    if (choice === 'Choice 1A') {
+      navigation.navigate('ImageScrollScreen');
+    } else {
+      console.log(`${choice} selected`);
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{type} - {selection} - Results</Text>
-      {items[type].map((item, index) => (
+      <Text style={styles.title}>{type} - {choice} - Choices</Text>
+      {choices[type].map((choice, index) => (
         <TouchableOpacity
           key={index}
-          style={styles.itemButton}
-          onPress={() => handleChoicePress(item)} // Handle choice press
+          style={styles.choiceButton}
+          onPress={() => handleChoicePress(choice)}
         >
-          <Text style={styles.itemText}>{item}</Text>
+          <Text style={styles.choiceText}>{choice}</Text>
         </TouchableOpacity>
       ))}
     </View>
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  itemButton: {
+  choiceButton: {
     backgroundColor: '#fff',
     padding: 15,
     marginBottom: 10,
@@ -57,9 +59,9 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 2,
   },
-  itemText: {
+  choiceText: {
     fontSize: 18,
   },
 });
 
-export default ResultScreen;
+export default ChoiceScreen;

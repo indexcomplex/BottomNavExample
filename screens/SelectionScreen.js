@@ -1,3 +1,4 @@
+// not in use anymore
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
@@ -8,6 +9,10 @@ const accordionTypes = {
 };
 
 function SelectionScreen({ navigation }) {
+  const handlePress = (type) => {
+    navigation.navigate('ChoiceScreen', { item: type });
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {Object.keys(accordionTypes).map(type => (
@@ -16,15 +21,9 @@ function SelectionScreen({ navigation }) {
           <Text style={styles.typeText}>{type.toUpperCase()}</Text>
           <TouchableOpacity
             style={styles.selectionButton}
-            onPress={() => navigation.navigate('ResultScreen', { type, selection: '31' })}
+            onPress={() => handlePress(type)}
           >
-            <Text style={styles.buttonText}>31</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.selectionButton}
-            onPress={() => navigation.navigate('ResultScreen', { type, selection: '34' })}
-          >
-            <Text style={styles.buttonText}>34</Text>
+            <Text style={styles.buttonText}>Select {type.toUpperCase()}</Text>
           </TouchableOpacity>
         </View>
       ))}
@@ -58,7 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 10,
     marginTop: 10,
-    width: 80,
+    width: 150,
     borderRadius: 10,
     alignItems: 'center',
     shadowColor: '#000',
