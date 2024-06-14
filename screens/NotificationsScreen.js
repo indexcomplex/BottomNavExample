@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Animated, TouchableOpacity, Text } from 'react-native';
 import CustomPressable from '../components/CustomPressable';
 
-const audioFiles = [
+const audioFilesFKey = [
   require('../assets/audio/F_Key/f1.mp3'),
   require('../assets/audio/F_Key/f2.mp3'),
   require('../assets/audio/F_Key/f3.mp3'),
@@ -39,8 +39,47 @@ const audioFiles = [
   require('../assets/audio/F_Key/f34.mp3'),
 ];
 
+const audioFilesGKey = [
+  require('../assets/audio/G_Key/g1.mp3'),
+  require('../assets/audio/G_Key/g2.mp3'),
+  require('../assets/audio/G_Key/g3.mp3'),
+  require('../assets/audio/G_Key/g4.mp3'),
+  require('../assets/audio/G_Key/g5.mp3'),
+  require('../assets/audio/G_Key/g6.mp3'),
+  require('../assets/audio/G_Key/g7.mp3'),
+  require('../assets/audio/G_Key/g8.mp3'),
+  require('../assets/audio/G_Key/g9.mp3'),
+  require('../assets/audio/G_Key/g10.mp3'),
+  require('../assets/audio/G_Key/g11.mp3'),
+  require('../assets/audio/G_Key/g12.mp3'),
+  require('../assets/audio/G_Key/g13.mp3'),
+  require('../assets/audio/G_Key/g14.mp3'),
+  require('../assets/audio/G_Key/g15.mp3'),
+  require('../assets/audio/G_Key/g16.mp3'),
+  require('../assets/audio/G_Key/g17.mp3'),
+  require('../assets/audio/G_Key/g18.mp3'),
+  require('../assets/audio/G_Key/g19.mp3'),
+  require('../assets/audio/G_Key/g20.mp3'),
+  require('../assets/audio/G_Key/g21.mp3'),
+  require('../assets/audio/G_Key/g22.mp3'),
+  require('../assets/audio/G_Key/g23.mp3'),
+  require('../assets/audio/G_Key/g24.mp3'),
+  require('../assets/audio/G_Key/g25.mp3'),
+  require('../assets/audio/G_Key/g26.mp3'),
+  require('../assets/audio/G_Key/g27.mp3'),
+  require('../assets/audio/G_Key/g28.mp3'),
+  require('../assets/audio/G_Key/g29.mp3'),
+  require('../assets/audio/G_Key/g30.mp3'),
+  require('../assets/audio/G_Key/g31.mp3'),
+  require('../assets/audio/G_Key/g32.mp3'),
+  require('../assets/audio/G_Key/g33.mp3'),
+  require('../assets/audio/G_Key/g34.mp3'),
+];
+
 const NotificationsScreen = () => {
   const [rotate, setRotate] = useState(new Animated.Value(0));
+  const [audioFiles, setAudioFiles] = useState(audioFilesFKey);
+  const [selectedKey, setSelectedKey] = useState('FKey');
 
   const handleInvert = () => {
     Animated.timing(rotate, {
@@ -48,6 +87,16 @@ const NotificationsScreen = () => {
       duration: 300,
       useNativeDriver: true,
     }).start();
+  };
+
+  const handleSwitchToFKey = () => {
+    setAudioFiles(audioFilesFKey);
+    setSelectedKey('FKey');
+  };
+
+  const handleSwitchToGKey = () => {
+    setAudioFiles(audioFilesGKey);
+    setSelectedKey('GKey');
   };
 
   const renderButtons = (start, end) => {
@@ -65,6 +114,26 @@ const NotificationsScreen = () => {
 
   return (
     <View style={styles.mainContainer}>
+      <View style={styles.switchContainer}>
+        <TouchableOpacity
+          style={[
+            styles.switchButton,
+            selectedKey === 'FKey' && styles.switchButtonSelected,
+          ]}
+          onPress={handleSwitchToFKey}
+        >
+          <Text style={styles.switchButtonText}>FBbEb</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.switchButton,
+            selectedKey === 'GKey' && styles.switchButtonSelected,
+          ]}
+          onPress={handleSwitchToGKey}
+        >
+          <Text style={styles.switchButtonText}>GCF</Text>
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity style={styles.invertButton} onPress={handleInvert}>
         <Text style={styles.invertButtonText}>Invert</Text>
       </TouchableOpacity>
@@ -86,20 +155,49 @@ const NotificationsScreen = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
+  },
+  switchContainer: {
+    flexDirection: 'column',
+    position: 'absolute',
+    top: '20%',
+    left: 5,
+    zIndex: 10,
+  },
+  switchButton: {
+    backgroundColor: '#FF5733',
+    padding: 10,
+    marginVertical: 10,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 70,
+    height: 40,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    elevation: 5,
+    transform: [{ rotate: '45deg' }], // Apply 45-degree tilt to the switches
+  },
+  switchButtonSelected: {
+    backgroundColor: '#FF3333',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 8,
+    elevation: 10,
   },
   invertButton: {
     backgroundColor: '#007BFF',
-    padding: 15,
-    margin: 10,
-    borderRadius: 10,
+    padding: 8,
+    margin: 5,
+    borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    left: 10,
-    top: '50%',
+    left: 5,
+    bottom: '10%',
     zIndex: 10,
-    transform: [{ rotate: '45deg' }],
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
@@ -108,8 +206,12 @@ const styles = StyleSheet.create({
   },
   invertButtonText: {
     color: '#fff',
-    fontSize: 16,
-    transform: [{ rotate: '-45deg' }],
+    fontSize: 12,
+  },
+  switchButtonText: {
+    color: '#fff',
+    fontSize: 10,
+    transform: [{ rotate: '-45deg' }], // Rotate text to align correctly
   },
   container: {
     flexDirection: 'row',
