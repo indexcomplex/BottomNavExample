@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
-import { Gyroscope } from 'expo-sensors';
+import React, { useState } from 'react';
+import { View, StyleSheet, Animated, TouchableOpacity, Text } from 'react-native';
 import CustomPressable from '../components/CustomPressable';
 
 const audioFiles = [
@@ -42,42 +41,14 @@ const audioFiles = [
 
 const NotificationsScreen = () => {
   const [rotate, setRotate] = useState(new Animated.Value(0));
-  const [isRotated, setIsRotated] = useState(false);
-  const rotationTimeout = useRef(null);
 
-  useEffect(() => {
-    Gyroscope.setUpdateInterval(100); // More frequent updates
-    const subscription = Gyroscope.addListener(({ y }) => {
-      console.log(`Gyroscope y-axis: ${y}`); // Debug log for y-axis value
-
-      if (y >= 1 && !isRotated) {
-        clearTimeout(rotationTimeout.current);
-        rotationTimeout.current = setTimeout(() => {
-          setIsRotated(true);
-          Animated.timing(rotate, {
-            toValue: 1,
-            duration: 300,
-            useNativeDriver: true,
-          }).start();
-        }, 1000); // Wait for 1 second
-      } else if (y <= -1 && isRotated) {
-        clearTimeout(rotationTimeout.current);
-        rotationTimeout.current = setTimeout(() => {
-          setIsRotated(false);
-          Animated.timing(rotate, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true,
-          }).start();
-        }, 1000); // Wait for 1 second
-      }
-    });
-
-    return () => {
-      clearTimeout(rotationTimeout.current);
-      subscription.remove();
-    };
-  }, [isRotated]);
+  const handleInvert = () => {
+    Animated.timing(rotate, {
+      toValue: rotate._value === 0 ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
 
   const renderButtons = (start, end) => {
     const buttons = [];
@@ -93,21 +64,53 @@ const NotificationsScreen = () => {
   });
 
   return (
-    <Animated.View style={[styles.container, { transform: [{ rotate: rotateInterpolation }] }]}>
-      <View style={styles.column}>
-        {renderButtons(1, 11)}
-      </View>
-      <View style={styles.column}>
-        {renderButtons(12, 23)}
-      </View>
-      <View style={styles.column}>
-        {renderButtons(24, 34)}
-      </View>
-    </Animated.View>
+    <View style={styles.mainContainer}>
+      <TouchableOpacity style={styles.invertButton} onPress={handleInvert}>
+        <Text style={styles.invertButtonText}>Invert</Text>
+      </TouchableOpacity>
+      <Animated.View style={[styles.container, { transform: [{ rotate: rotateInterpolation }] }]}>
+        <View style={styles.column}>
+          {renderButtons(1, 11)}
+        </View>
+        <View style={styles.column}>
+          {renderButtons(12, 23)}
+        </View>
+        <View style={styles.column}>
+          {renderButtons(24, 34)}
+        </View>
+      </Animated.View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  invertButton: {
+    backgroundColor: '#007BFF',
+    padding: 15,
+    margin: 10,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    left: 10,
+    top: '50%',
+    zIndex: 10,
+    transform: [{ rotate: '45deg' }],
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  invertButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    transform: [{ rotate: '-45deg' }],
+  },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
