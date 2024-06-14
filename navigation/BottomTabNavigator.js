@@ -1,7 +1,6 @@
 // BottomTabNavigator.js
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -61,6 +60,11 @@ function HomeStackNavigator() {
           header: () => <CustomHeader title="Images" />,
           headerTitle: '',
         }}
+      />
+      <Stack.Screen
+        name="NotificationsScreen"
+        component={NotificationsScreen}
+        options={{ headerShown: false }} // Default to hidden header
       />
     </Stack.Navigator>
   );

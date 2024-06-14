@@ -6,7 +6,7 @@ import { View, Text, StyleSheet } from 'react-native';
 function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Phase 2</Text>
+      <Text style={styles.title}>Phase 2.1</Text>
     </View>
   );
 }
