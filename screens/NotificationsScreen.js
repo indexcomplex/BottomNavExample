@@ -1,6 +1,6 @@
-// screens/NotificationsScreen.js
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, Animated } from 'react-native';
+import { Gyroscope } from 'expo-sensors';
 import CustomPressable from '../components/CustomPressable';
 
 const audioFiles = [
@@ -41,6 +41,44 @@ const audioFiles = [
 ];
 
 const NotificationsScreen = () => {
+  const [rotate, setRotate] = useState(new Animated.Value(0));
+  const [isRotated, setIsRotated] = useState(false);
+  const rotationTimeout = useRef(null);
+
+  useEffect(() => {
+    Gyroscope.setUpdateInterval(100); // More frequent updates
+    const subscription = Gyroscope.addListener(({ y }) => {
+      console.log(`Gyroscope y-axis: ${y}`); // Debug log for y-axis value
+
+      if (y >= 1 && !isRotated) {
+        clearTimeout(rotationTimeout.current);
+        rotationTimeout.current = setTimeout(() => {
+          setIsRotated(true);
+          Animated.timing(rotate, {
+            toValue: 1,
+            duration: 300,
+            useNativeDriver: true,
+          }).start();
+        }, 1000); // Wait for 1 second
+      } else if (y <= -1 && isRotated) {
+        clearTimeout(rotationTimeout.current);
+        rotationTimeout.current = setTimeout(() => {
+          setIsRotated(false);
+          Animated.timing(rotate, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+          }).start();
+        }, 1000); // Wait for 1 second
+      }
+    });
+
+    return () => {
+      clearTimeout(rotationTimeout.current);
+      subscription.remove();
+    };
+  }, [isRotated]);
+
   const renderButtons = (start, end) => {
     const buttons = [];
     for (let i = start; i <= end; i++) {
@@ -49,8 +87,13 @@ const NotificationsScreen = () => {
     return buttons;
   };
 
+  const rotateInterpolation = rotate.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'], // Full 180 degrees inversion
+  });
+
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, { transform: [{ rotate: rotateInterpolation }] }]}>
       <View style={styles.column}>
         {renderButtons(1, 11)}
       </View>
@@ -60,7 +103,7 @@ const NotificationsScreen = () => {
       <View style={styles.column}>
         {renderButtons(24, 34)}
       </View>
-    </View>
+    </Animated.View>
   );
 };
 
@@ -69,14 +112,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 1,
+    padding: 10,
     backgroundColor: '#f0f0f0',
     flex: 1,
   },
   column: {
     flexDirection: 'column',
     alignItems: 'center',
-    marginHorizontal: 10,
+    marginHorizontal: 5,
   },
 });
 

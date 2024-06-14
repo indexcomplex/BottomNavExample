@@ -26,7 +26,7 @@ const SoundButton = ({ label, audioFile }) => {
   };
 
   return (
-    <TouchableOpacity style={styles.button} onPressIn={playSound} onPressOut={playSound}>
+    <TouchableOpacity style={styles.button} onPressIn={playSound}>
       <Text style={styles.buttonText}>{label}</Text>
     </TouchableOpacity>
   );
