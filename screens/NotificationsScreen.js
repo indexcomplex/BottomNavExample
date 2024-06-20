@@ -1,4 +1,3 @@
-// NotificationsScreen.js
 import React, { useState } from 'react';
 import { View, StyleSheet, Animated, TouchableOpacity, Text } from 'react-native';
 import CustomPressable from '../components/CustomPressable';

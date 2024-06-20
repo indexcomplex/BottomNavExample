@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Image, ScrollView, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-native';
 import { Audio } from 'expo-av';
+import { FontAwesome } from '@expo/vector-icons';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -16,90 +17,109 @@ const images = [
   require('../assets/images/image8.png'),
 ];
 
-function ImageScrollScreen() {
-  const sound = useRef(new Audio.Sound());
-  const loopSound = useRef(new Audio.Sound());
-  const [isLoopEnabled, setIsLoopEnabled] = useState(false);
-  const [isSoundLoading, setIsSoundLoading] = useState(false);
+const audios = [
+  require('../assets/audio/fas1.mp3'),
+  require('../assets/audio/fas2.mp3'),
+  require('../assets/audio/fas3.mp3'),
+  require('../assets/audio/fas4.mp3'),
+  require('../assets/audio/fas5.mp3'),
+  require('../assets/audio/fas6.mp3'),
+  require('../assets/audio/fas7.mp3'),
+  require('../assets/audio/fas8.mp3'),
+];
 
-  const playSound = async () => {
-    if (isSoundLoading) {
-      console.log('Sound is already loading');
+function ImageScrollScreen() {
+  const sounds = useRef([]);
+  const [isPlaying, setIsPlaying] = useState(Array(images.length).fill(false));
+  const [soundLoaded, setSoundLoaded] = useState(Array(images.length).fill(false));
+
+  const loadSound = async (index) => {
+    if (soundLoaded[index]) {
       return;
     }
-
-    setIsSoundLoading(true);
-    console.log('Attempting to play sound');
+    sounds.current[index] = new Audio.Sound();
     try {
-      await sound.current.unloadAsync();
-      console.log('Sound unloaded');
-      await sound.current.loadAsync(require('../assets/audio/fas1.mp3'));
-      console.log('Sound loaded');
-      await sound.current.playAsync();
-      console.log('Sound played');
+      await sounds.current[index].loadAsync(audios[index]);
+      await sounds.current[index].setIsLoopingAsync(true);
+      setSoundLoaded((prev) => {
+        const newSoundLoaded = [...prev];
+        newSoundLoaded[index] = true;
+        return newSoundLoaded;
+      });
+      console.log(`Sound ${index + 1} loaded`);
     } catch (error) {
-      console.log('Error loading or playing sound:', error);
-    } finally {
-      setIsSoundLoading(false);
+      console.log(`Error loading sound ${index + 1}:`, error);
     }
   };
 
-  const toggleLoop = async () => {
-    console.log(`Toggling loop: ${!isLoopEnabled}`);
-    setIsLoopEnabled(!isLoopEnabled);
-
-    if (!isLoopEnabled) {
-      console.log('Attempting to play loop sound');
-      try {
-        await loopSound.current.unloadAsync();
-        console.log('Loop sound unloaded');
-        await loopSound.current.loadAsync(require('../assets/audio/fas2.mp3'));
-        console.log('Loop sound loaded');
-        await loopSound.current.setIsLoopingAsync(true);
-        await loopSound.current.playAsync();
-        console.log('Loop sound played');
-      } catch (error) {
-        console.log('Error loading or playing loop sound:', error);
-      }
+  const playPauseSound = async (index) => {
+    if (isPlaying[index]) {
+      await sounds.current[index].pauseAsync();
+      setIsPlaying((prev) => {
+        const newIsPlaying = [...prev];
+        newIsPlaying[index] = false;
+        return newIsPlaying;
+      });
+      console.log(`Sound ${index + 1} paused`);
     } else {
-      await loopSound.current.unloadAsync();
-      console.log('Loop sound stopped');
+      if (!soundLoaded[index]) {
+        await loadSound(index);
+      }
+      await sounds.current[index].playAsync();
+      setIsPlaying((prev) => {
+        const newIsPlaying = [...prev];
+        newIsPlaying.fill(false); // Pause all other sounds
+        newIsPlaying[index] = true;
+        return newIsPlaying;
+      });
+      console.log(`Sound ${index + 1} played`);
     }
   };
 
   useEffect(() => {
     return () => {
-      sound.current.unloadAsync().catch(error => console.log('Error unloading sound:', error));
-      loopSound.current.unloadAsync().catch(error => console.log('Error unloading loop sound:', error));
+      sounds.current.forEach((sound) => {
+        if (sound) {
+          sound.unloadAsync().catch((error) => console.log('Error unloading sound:', error));
+        }
+      });
     };
   }, []);
 
-  console.log('ImageScrollScreen rendered');  // Verify rendering
+  console.log('ImageScrollScreen rendered'); // Verify rendering
 
   return (
-    <View style={{ flex: 1 }}>
-      <ScrollView 
-        horizontal 
-        contentContainerStyle={styles.container} 
+    <View style={styles.mainContainer}>
+      <ScrollView
+        horizontal
+        contentContainerStyle={styles.container}
         showsHorizontalScrollIndicator={false}
       >
         {images.map((image, index) => (
-          <TouchableOpacity key={index} style={styles.imageContainer} onPress={playSound}>
+          <View key={index} style={styles.imageContainer}>
             <Text>Test for ead 31</Text>
             <Image source={image} style={styles.image} />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={() => playPauseSound(index)}>
+              <FontAwesome
+                name={isPlaying[index] ? 'pause' : 'play'}
+                size={32}
+                color="black"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          </View>
         ))}
       </ScrollView>
-      <View style={styles.footer}>
-        <TouchableOpacity onPress={toggleLoop} style={styles.loopButton}>
-          <Text style={styles.loopText}>{isLoopEnabled ? 'Loop On' : 'Loop Off'}</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flexDirection: 'row', // Arrange items in a row
     backgroundColor: '#fff',
@@ -115,18 +135,8 @@ const styles = StyleSheet.create({
     height: screenHeight * 0.5, // 50% of screen height
     resizeMode: 'contain',
   },
-  footer: {
-    padding: 20,
-    alignItems: 'center',
-  },
-  loopButton: {
-    backgroundColor: '#007BFF',
-    padding: 10,
-    borderRadius: 5,
-  },
-  loopText: {
-    color: '#fff',
-    fontSize: 16,
+  icon: {
+    marginTop: 10,
   },
 });
 

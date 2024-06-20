@@ -1,30 +1,29 @@
-// CustomPressable.js
-import React from 'react';
+import React, { useRef } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
-import { GestureDetector, GestureHandlerRootView, Gesture } from 'react-native-gesture-handler';
+import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { Audio } from 'expo-av';
 
 const CustomPressable = ({ label, audioFile, buttonSize }) => {
   const playSound = async () => {
     try {
-      const { sound } = await Audio.Sound.createAsync(audioFile);
-      console.log(`Sound for ${label} created`);
-      await sound.playAsync();
-      console.log(`Sound for ${label} played`);
-      sound.setOnPlaybackStatusUpdate((status) => {
-        if (status.didJustFinish) {
-          sound.unloadAsync();
-          console.log(`Sound for ${label} finished and unloaded`);
-        }
-      });
+      const { sound: newSound } = await Audio.Sound.createAsync(audioFile);
+      await newSound.playAsync();
     } catch (error) {
       console.error(`Error playing sound for ${label}:`, error);
     }
   };
 
-  const tapGesture = Gesture.Tap().onEnd(() => {
-    playSound();
-  });
+  const stopSound = async () => {
+    // You can decide if you still want to have a stop function
+  };
+
+  const tapGesture = Gesture.Tap()
+    .onTouchesDown(() => {
+      playSound();
+    })
+    .onTouchesUp(() => {
+      stopSound();
+    });
 
   return (
     <GestureDetector gesture={tapGesture}>
