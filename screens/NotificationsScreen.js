@@ -1,3 +1,4 @@
+// NotificationsScreen.js
 import React, { useState } from 'react';
 import { View, StyleSheet, Animated, TouchableOpacity, Text } from 'react-native';
 import CustomPressable from '../components/CustomPressable';
@@ -80,6 +81,8 @@ const NotificationsScreen = () => {
   const [rotate, setRotate] = useState(new Animated.Value(0));
   const [audioFiles, setAudioFiles] = useState(audioFilesFKey);
   const [selectedKey, setSelectedKey] = useState('FKey');
+  const [buttonConfig, setButtonConfig] = useState({ row1: 11, row2: 12, row3: 11 });
+  const [isShortenedView, setIsShortenedView] = useState(false);
 
   const handleInvert = () => {
     Animated.timing(rotate, {
@@ -99,10 +102,26 @@ const NotificationsScreen = () => {
     setSelectedKey('GKey');
   };
 
-  const renderButtons = (start, end) => {
+  const handleChangeButtonConfig = () => {
+    setIsShortenedView(!isShortenedView);
+    if (isShortenedView) {
+      setButtonConfig({ row1: 11, row2: 12, row3: 11 });
+    } else {
+      setButtonConfig({ row1: 8, row2: 9, row3: 8 });
+    }
+  };
+
+  const renderButtons = (start, end, buttonSize) => {
     const buttons = [];
     for (let i = start; i <= end; i++) {
-      buttons.push(<CustomPressable key={i} label={`B${i}`} audioFile={audioFiles[i - 1]} />);
+      buttons.push(
+        <CustomPressable
+          key={i}
+          label={`B${i}`}
+          audioFile={audioFiles[i - 1]}
+          buttonSize={buttonSize} // Pass buttonSize as prop to CustomPressable
+        />
+      );
     }
     return buttons;
   };
@@ -114,6 +133,33 @@ const NotificationsScreen = () => {
 
   return (
     <View style={styles.mainContainer}>
+      <TouchableOpacity style={styles.invertButton} onPress={handleInvert}>
+        <Text style={styles.invertButtonText}>Invert</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.changeConfigButton} onPress={handleChangeButtonConfig}>
+        <Text style={styles.changeConfigButtonText}>
+          {isShortenedView ? '34 Boton' : '25 Boton'}
+        </Text>
+      </TouchableOpacity>
+      <Animated.View style={[styles.container, { transform: [{ rotate: rotateInterpolation }] }]}>
+        <View style={styles.column}>
+          {renderButtons(1, buttonConfig.row1, isShortenedView ? 70 : 50)}
+        </View>
+        <View style={[styles.column, isShortenedView && styles.columnShortened]}>
+          {renderButtons(
+            isShortenedView ? 12 : buttonConfig.row1 + 1,
+            isShortenedView ? 20 : buttonConfig.row1 + buttonConfig.row2,
+            isShortenedView ? 70 : 50
+          )}
+        </View>
+        <View style={styles.column}>
+          {renderButtons(
+            isShortenedView ? 24 : buttonConfig.row1 + buttonConfig.row2 + 1,
+            isShortenedView ? 31 : buttonConfig.row1 + buttonConfig.row2 + buttonConfig.row3,
+            isShortenedView ? 70 : 50
+          )}
+        </View>
+      </Animated.View>
       <View style={styles.switchContainer}>
         <TouchableOpacity
           style={[
@@ -134,20 +180,6 @@ const NotificationsScreen = () => {
           <Text style={styles.switchButtonText}>GCF</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.invertButton} onPress={handleInvert}>
-        <Text style={styles.invertButtonText}>Invert</Text>
-      </TouchableOpacity>
-      <Animated.View style={[styles.container, { transform: [{ rotate: rotateInterpolation }] }]}>
-        <View style={styles.column}>
-          {renderButtons(1, 11)}
-        </View>
-        <View style={styles.column}>
-          {renderButtons(12, 23)}
-        </View>
-        <View style={styles.column}>
-          {renderButtons(24, 34)}
-        </View>
-      </Animated.View>
     </View>
   );
 };
@@ -179,13 +211,15 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
     transform: [{ rotate: '45deg' }], // Apply 45-degree tilt to the switches
+    borderWidth: 2,
+    borderColor: '#333',
   },
   switchButtonSelected: {
     backgroundColor: '#FF3333',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 1,
-    shadowRadius: 8,
-    elevation: 10,
+    shadowRadius: 10,
+    elevation: 20,
   },
   invertButton: {
     backgroundColor: '#007BFF',
@@ -204,14 +238,35 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
   },
+  changeConfigButton: {
+    backgroundColor: '#28A745',
+    padding: 8,
+    margin: 5,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    left: 5,
+    bottom: '20%',
+    zIndex: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    elevation: 5,
+  },
   invertButtonText: {
     color: '#fff',
-    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  changeConfigButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
   switchButtonText: {
     color: '#fff',
-    fontSize: 10,
-    transform: [{ rotate: '-45deg' }], // Rotate text to align correctly
+    fontWeight: 'bold',
+    transform: [{ rotate: '-45deg' }], // Correct the text rotation
   },
   container: {
     flexDirection: 'row',
@@ -220,11 +275,15 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#f0f0f0',
     flex: 1,
+    transform: [{ rotate: '-45deg' }], // Apply 45-degree tilt to the container
   },
   column: {
     flexDirection: 'column',
     alignItems: 'center',
     marginHorizontal: 5,
+  },
+  columnShortened: {
+    marginHorizontal: 10, // Increase spacing for shortened view
   },
 });
 
