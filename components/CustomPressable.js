@@ -50,3 +50,4 @@ const styles = StyleSheet.create({
 });
 
 export default CustomPressable;
+//made sound better removed unloading of sound
