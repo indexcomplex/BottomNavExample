@@ -1,26 +1,55 @@
-// screens/HomeScreen.js
+import React, { useState, useEffect } from 'react';
+import { View, Image, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
+import { storage } from '../config/firebaseConfig';
+import YoutubePlayer from 'react-native-youtube-iframe';
 
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+const HomeScreen = () => {
+  const [data, setData] = useState([]);
 
-function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Phase 2.2</Text>
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const imagesRef = ref(storage, 'images'); // Reference to the "images" folder
+        const result = await listAll(imagesRef);
+        const urls = await Promise.all(result.items.map((imageRef) => getDownloadURL(imageRef)));
+        setData(urls);
+      } catch (error) {
+        console.error('Error fetching images:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const renderItem = ({ item }) => (
+    <View style={styles.item}>
+      <Image source={{ uri: item }} style={styles.image} />
     </View>
   );
-}
+
+  return (
+    <FlatList
+      data={data}
+      renderItem={renderItem}
+      keyExtractor={(item, index) => index.toString()}
+      contentContainerStyle={styles.container}
+    />
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    paddingTop: 20,
   },
-  title: {
-    fontSize: 24,
-    color: '#333',
+  item: {
+    marginBottom: 20,
+  },
+  image: {
+    width: Dimensions.get('window').width - 40,
+    height: 200,
+    borderRadius: 10,
   },
 });
 
